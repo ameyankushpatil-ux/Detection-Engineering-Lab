@@ -1,1 +1,29 @@
+title: Suspicious PowerShell Encoded Command
+id: 00000000-0000-0000-0000-000000000001
+status: experimental
+description: Detects PowerShell execution using encoded command arguments.
+author: Amey Patil
+date: 2026-08-09
 
+logsource:
+    product: windows
+    category: process_creation
+
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains:
+            - '-enc'
+            - '-EncodedCommand'
+
+    condition: selection
+
+falsepositives:
+    - Legitimate administrative activity
+    - Automation scripts using encoded PowerShell commands
+
+level: medium
+
+tags:
+    - attack.execution
+    - attack.t1059.001
